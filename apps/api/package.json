@@ -1,0 +1,13 @@
+{
+  "name": "@forgeos/api",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ForgeOS api application",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Starting api...",
+    "build": "echo Building api...",
+    "lint": "echo Linting api...",
+    "test": "echo Testing api..."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@forgeos/web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ForgeOS web application",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Starting web...",
+    "build": "echo Building web...",
+    "lint": "echo Linting web...",
+    "test": "echo Testing web..."
+  }
+}

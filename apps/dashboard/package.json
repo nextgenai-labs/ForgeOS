@@ -1,0 +1,13 @@
+{
+  "name": "@forgeos/dashboard",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ForgeOS dashboard application",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Starting dashboard...",
+    "build": "echo Building dashboard...",
+    "lint": "echo Linting dashboard...",
+    "test": "echo Testing dashboard..."
+  }
+}

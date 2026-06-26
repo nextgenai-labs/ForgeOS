@@ -1,0 +1,13 @@
+{
+  "name": "@forgeos/discord",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ForgeOS discord application",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Starting discord...",
+    "build": "echo Building discord...",
+    "lint": "echo Linting discord...",
+    "test": "echo Testing discord..."
+  }
+}

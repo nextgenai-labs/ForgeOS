@@ -1,0 +1,13 @@
+{
+  "name": "@forgeos/docs",
+  "private": true,
+  "version": "0.1.0",
+  "description": "ForgeOS docs application",
+  "type": "module",
+  "scripts": {
+    "dev": "echo Starting docs...",
+    "build": "echo Building docs...",
+    "lint": "echo Linting docs...",
+    "test": "echo Testing docs..."
+  }
+}
