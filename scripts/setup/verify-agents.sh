@@ -2,13 +2,19 @@
 
 set -e
 
+source scripts/lib/common.sh
+source scripts/lib/colors.sh
+source scripts/lib/output.sh
+source scripts/lib/validator.sh
+
+title "ForgeOS Agent Validator"
+
+set -e
+
 echo "=================================="
 echo " ForgeOS Agent Validator"
 echo "=================================="
 echo
-
-FAILED=0
-PASSED=0
 
 for agent in agents/*/*
 do
@@ -35,11 +41,11 @@ do
 
     if $OK
     then
-        echo "✓ $NAME"
-        PASSED=$((PASSED+1))
+        success "$NAME"
+        pass
     else
-        echo "✗ $NAME"
-        FAILED=$((FAILED+1))
+        error "$NAME"
+        fail
     fi
 done
 
