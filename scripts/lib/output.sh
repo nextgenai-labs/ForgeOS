@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source "$(dirname "$0")/colors.sh"
-
 success() {
     printf "${GREEN}✓ %s${RESET}\n" "$1"
 }
@@ -14,6 +12,12 @@ warning() {
     printf "${YELLOW}! %s${RESET}\n" "$1"
 }
 
+info() {
+    printf "${BLUE}• %s${RESET}\n" "$1"
+}
+
 title() {
-    printf "\n${CYAN}%s${RESET}\n\n" "$1"
+    echo
+    printf "${CYAN}%s${RESET}\n" "$1"
+    echo
 }
