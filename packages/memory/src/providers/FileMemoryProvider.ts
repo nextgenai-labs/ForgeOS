@@ -3,7 +3,10 @@ import { dirname } from "node:path";
 
 import type { MemoryRecord } from "../types/MemoryRecord";
 
-export class FileMemoryProvider {
+import type { MemoryProvider } from "./MemoryProvider";
+
+export class FileMemoryProvider
+implements MemoryProvider {
 
     constructor(
         private readonly filePath: string
