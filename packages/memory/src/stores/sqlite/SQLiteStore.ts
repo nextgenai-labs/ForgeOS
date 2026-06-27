@@ -152,7 +152,8 @@ export class SQLiteStore implements IMemoryStore {
     async clear(): Promise<void> {
 
         this.db.prepare(`
-            DELETE FROM memory
+            DELETE
+            FROM memory
         `).run();
 
     }
@@ -161,12 +162,56 @@ export class SQLiteStore implements IMemoryStore {
         query: MemoryQuery
     ): Promise<MemoryRecord[]> {
 
-        void query;
+        const conditions: string[] = [];
 
-        const rows = this.db.prepare(`
+        const values: unknown[] = [];
+
+        if (query.key) {
+
+            conditions.push("key = ?");
+
+            values.push(query.key);
+
+        }
+
+        if (query.namespace) {
+
+            conditions.push("namespace = ?");
+
+            values.push(query.namespace);
+
+        }
+
+        let sql = `
             SELECT *
             FROM memory
-        `).all() as SQLiteMemoryRecord[];
+        `;
+
+        if (conditions.length > 0) {
+
+            sql += `
+                WHERE ${conditions.join(" AND ")}
+            `;
+
+        }
+
+        sql += `
+            ORDER BY updatedAt DESC
+        `;
+
+        if (query.limit !== undefined) {
+
+            sql += `
+                LIMIT ?
+            `;
+
+            values.push(query.limit);
+
+        }
+
+        const rows = this.db
+            .prepare(sql)
+            .all(...values) as SQLiteMemoryRecord[];
 
         return rows.map(
             row => this.toMemoryRecord(row)

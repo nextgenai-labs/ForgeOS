@@ -26,24 +26,67 @@ async function main(): Promise<void> {
 
     });
 
-    console.log(
-        await store.get("company")
-    );
+    await store.set({
 
-    console.log(
-        await store.has("company")
-    );
+        id: randomUUID(),
+
+        key: "agent",
+
+        namespace: "system",
+
+        value: "ELENA",
+
+        createdAt: now,
+
+        updatedAt: now
+
+    });
+
+    await store.set({
+
+        id: randomUUID(),
+
+        key: "user",
+
+        namespace: "accounts",
+
+        value: "Darshan",
+
+        createdAt: now,
+
+        updatedAt: now
+
+    });
+
+    console.log("All");
 
     console.log(
         await store.query({})
     );
 
-    console.log(
-        await store.delete("company")
-    );
+    console.log("Namespace");
 
     console.log(
-        await store.has("company")
+        await store.query({
+            namespace: "system"
+        })
+    );
+
+    console.log("Key");
+
+    console.log(
+        await store.query({
+            key: "company"
+        })
+    );
+
+    console.log("Namespace + Key");
+
+    console.log(
+        await store.query({
+            namespace: "system",
+            key: "agent"
+        })
     );
 
 }

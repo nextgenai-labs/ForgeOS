@@ -1,8 +1,8 @@
 export interface MemoryQuery {
 
-    namespace?: string;
-
     key?: string;
+
+    namespace?: string;
 
     limit?: number;
 
