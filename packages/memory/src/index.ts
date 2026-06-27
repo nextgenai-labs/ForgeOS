@@ -2,6 +2,10 @@ export * from "./core/MemoryManager";
 
 export * from "./stores/InMemoryStore";
 
+// packages/memory/src/index.ts
+
+export * from "./stores/sqlite/SQLiteStore";
+
 export * from "./interfaces/IMemoryStore";
 
 export * from "./providers/BaseProvider";

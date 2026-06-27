@@ -3,3 +3,5 @@ packages:
   - packages/*
   - sdk/*
   - plugins/*
+allowBuilds:
+  better-sqlite3: true
