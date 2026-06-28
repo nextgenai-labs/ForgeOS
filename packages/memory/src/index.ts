@@ -23,3 +23,5 @@ export * from "./embeddings/EmbeddingProvider";
 export * from "./embeddings/BaseEmbeddingProvider";
 
 export * from "./types/Embedding";
+
+export * from "./vector/CosineSimilarity";
