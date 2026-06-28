@@ -29,3 +29,5 @@ export * from "./vector/CosineSimilarity";
 export * from "./vector/VectorStore";
 
 export * from "./vector/InMemoryVectorStore";
+
+export * from "./providers/OllamaEmbeddingProvider";
