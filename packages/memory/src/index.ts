@@ -17,3 +17,9 @@ export * from "./providers/MemoryProvider";
 export * from "./types/MemoryRecord";
 
 export * from "./types/MemoryQuery";
+
+export * from "./embeddings/EmbeddingProvider";
+
+export * from "./embeddings/BaseEmbeddingProvider";
+
+export * from "./types/Embedding";
