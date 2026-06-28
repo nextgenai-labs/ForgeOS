@@ -35,3 +35,5 @@ export * from "./providers/OllamaEmbeddingProvider";
 export * from "./types/SearchResult";
 
 export * from "./types/SemanticSearchOptions";
+
+export * from "./vector/SQLiteVectorStore";
