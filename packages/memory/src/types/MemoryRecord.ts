@@ -2,17 +2,19 @@ export interface MemoryRecord<
     TValue = unknown,
     TMetadata extends Record<string, unknown> = Record<string, unknown>
 > {
+
     id: string;
 
     key: string;
 
+    namespace: string;
+
     value: TValue;
 
-    namespace: string;
+    metadata?: TMetadata;
 
     createdAt: Date;
 
     updatedAt: Date;
 
-    metadata?: TMetadata;
 }

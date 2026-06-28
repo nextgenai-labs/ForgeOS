@@ -6,11 +6,20 @@ import type { MemoryQuery } from "../../types/MemoryQuery";
 
 type SQLiteMemoryRecord = Omit<
     MemoryRecord,
-    "value" | "createdAt" | "updatedAt"
+    "value" |
+    "metadata" |
+    "createdAt" |
+    "updatedAt"
 > & {
+
     value: string;
+
+    metadata: string | null;
+
     createdAt: string;
+
     updatedAt: string;
+
 };
 
 export class SQLiteStore implements IMemoryStore {
@@ -35,6 +44,7 @@ export class SQLiteStore implements IMemoryStore {
                 key TEXT UNIQUE,
                 namespace TEXT,
                 value TEXT NOT NULL,
+                metadata TEXT,
                 createdAt TEXT NOT NULL,
                 updatedAt TEXT NOT NULL
             );
@@ -51,6 +61,11 @@ export class SQLiteStore implements IMemoryStore {
             ...row,
 
             value: JSON.parse(row.value),
+
+            metadata:
+                row.metadata === null
+                    ? undefined
+                    : JSON.parse(row.metadata),
 
             createdAt: new Date(row.createdAt),
 
@@ -71,6 +86,7 @@ export class SQLiteStore implements IMemoryStore {
                 key,
                 namespace,
                 value,
+                metadata,
                 createdAt,
                 updatedAt
             )
@@ -80,6 +96,7 @@ export class SQLiteStore implements IMemoryStore {
                 @key,
                 @namespace,
                 @value,
+                @metadata,
                 @createdAt,
                 @updatedAt
             )
@@ -92,6 +109,11 @@ export class SQLiteStore implements IMemoryStore {
             namespace: record.namespace,
 
             value: JSON.stringify(record.value),
+
+            metadata:
+                record.metadata === undefined
+                    ? null
+                    : JSON.stringify(record.metadata),
 
             createdAt: record.createdAt.toISOString(),
 
@@ -166,7 +188,7 @@ export class SQLiteStore implements IMemoryStore {
 
         const values: unknown[] = [];
 
-        if (query.key) {
+        if (query.key !== undefined) {
 
             conditions.push("key = ?");
 
@@ -174,7 +196,7 @@ export class SQLiteStore implements IMemoryStore {
 
         }
 
-        if (query.namespace) {
+        if (query.namespace !== undefined) {
 
             conditions.push("namespace = ?");
 
@@ -195,8 +217,27 @@ export class SQLiteStore implements IMemoryStore {
 
         }
 
+        const orderByColumns = {
+
+            key: "key",
+
+            createdAt: "createdAt",
+
+            updatedAt: "updatedAt"
+
+        } as const;
+
+        const orderBy = orderByColumns[
+            query.orderBy ?? "updatedAt"
+        ];
+
+        const order =
+            query.order === "ASC"
+                ? "ASC"
+                : "DESC";
+
         sql += `
-            ORDER BY updatedAt DESC
+            ORDER BY ${orderBy} ${order}
         `;
 
         if (query.limit !== undefined) {
@@ -209,13 +250,56 @@ export class SQLiteStore implements IMemoryStore {
 
         }
 
+        if (query.offset !== undefined) {
+
+            if (query.limit === undefined) {
+
+                sql += `
+                    LIMIT -1
+                `;
+
+            }
+
+            sql += `
+                OFFSET ?
+            `;
+
+            values.push(query.offset);
+
+        }
+
         const rows = this.db
             .prepare(sql)
             .all(...values) as SQLiteMemoryRecord[];
 
-        return rows.map(
+        let records = rows.map(
             row => this.toMemoryRecord(row)
         );
+
+        if (query.metadata !== undefined) {
+
+            const metadata = query.metadata;
+
+            records = records.filter(record => {
+
+                const recordMetadata = record.metadata;
+
+                if (recordMetadata === undefined) {
+
+                    return false;
+
+                }
+
+                return Object.entries(metadata).every(
+                    ([key, value]) =>
+                        recordMetadata[key] === value
+                );
+
+            });
+
+        }
+
+        return records;
 
     }
 
