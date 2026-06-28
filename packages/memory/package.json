@@ -1,5 +1,11 @@
 {
-  "name":"@forgeos/memory",
-  "version":"0.1.0",
-  "private":true
+  "name": "@forgeos/memory",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0"
+  }
 }
