@@ -1,4 +1,5 @@
 import type { Embedding } from "../types/Embedding";
+import type { SearchResult } from "../types/SearchResult";
 
 export interface VectorStore {
 
@@ -13,8 +14,17 @@ export interface VectorStore {
     clear(): Promise<void>;
 
     search(
+
         vector: number[],
-        limit?: number
-    ): Promise<Embedding[]>;
+
+        limit?: number,
+
+        minScore?: number,
+
+        metadata?: Record<string, unknown>,
+
+        namespace?: string
+
+    ): Promise<SearchResult[]>;
 
 }

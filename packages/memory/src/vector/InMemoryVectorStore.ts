@@ -1,6 +1,8 @@
+import type { Embedding } from "../types/Embedding";
+import type { SearchResult } from "../types/SearchResult";
+
 import { cosineSimilarity } from "./CosineSimilarity";
 
-import type { Embedding } from "../types/Embedding";
 import type { VectorStore } from "./VectorStore";
 
 export class InMemoryVectorStore
@@ -43,28 +45,72 @@ implements VectorStore {
     }
 
     async search(
+
         vector: number[],
-        limit = 5
-    ): Promise<Embedding[]> {
 
-        return [...this.embeddings]
-            .map(embedding => ({
+        limit = 5,
 
-                embedding,
+        minScore = 0,
 
-                score: cosineSimilarity(
-                    vector,
-                    embedding.vector
-                )
+        metadata?: Record<string, unknown>,
 
-            }))
+        namespace?: string
+
+    ): Promise<SearchResult[]> {
+
+        let results = this.embeddings
+            .map(
+                embedding => ({
+
+                    embedding,
+
+                    score: cosineSimilarity(
+                        vector,
+                        embedding.vector
+                    )
+
+                })
+            )
+            .filter(
+                result => result.score >= minScore
+            );
+
+        if (namespace !== undefined) {
+
+            results = results.filter(
+                result =>
+                    result.embedding.namespace === namespace
+            );
+
+        }
+
+        if (metadata !== undefined) {
+
+            results = results.filter(result => {
+
+                if (result.embedding.metadata === undefined) {
+
+                    return false;
+
+                }
+
+                return Object.entries(metadata).every(
+
+                    ([key, value]) =>
+
+                        result.embedding.metadata?.[key] === value
+
+                );
+
+            });
+
+        }
+
+        return results
             .sort(
                 (a, b) => b.score - a.score
             )
-            .slice(0, limit)
-            .map(
-                result => result.embedding
-            );
+            .slice(0, limit);
 
     }
 

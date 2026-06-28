@@ -6,6 +6,8 @@ export interface Embedding {
 
     vector: number[];
 
+    namespace?: string;
+
     metadata?: Record<string, unknown>;
 
 }

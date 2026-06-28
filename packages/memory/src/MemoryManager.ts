@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import type { EmbeddingProvider } from "./embeddings/EmbeddingProvider";
 import type { IMemoryStore } from "./interfaces/IMemoryStore";
 import type { MemoryRecord } from "./types/MemoryRecord";
+import type { SemanticSearchOptions } from "./types/SemanticSearchOptions";
 import type { VectorStore } from "./vector/VectorStore";
 
 export class MemoryManager {
@@ -65,6 +66,8 @@ export class MemoryManager {
 
             vector,
 
+            namespace,
+
             metadata
 
         });
@@ -107,7 +110,7 @@ export class MemoryManager {
 
         query: string,
 
-        limit = 5
+        options: SemanticSearchOptions = {}
 
     ): Promise<string[]> {
 
@@ -116,12 +119,21 @@ export class MemoryManager {
         );
 
         const results = await this.vectorStore.search(
+
             vector,
-            limit
+
+            options.limit ?? 5,
+
+            options.minScore ?? 0,
+
+            options.metadata,
+
+            options.namespace
+
         );
 
         return results.map(
-            result => result.text
+            result => result.embedding.text
         );
 
     }

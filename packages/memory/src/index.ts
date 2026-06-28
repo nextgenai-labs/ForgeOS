@@ -31,3 +31,7 @@ export * from "./vector/VectorStore";
 export * from "./vector/InMemoryVectorStore";
 
 export * from "./providers/OllamaEmbeddingProvider";
+
+export * from "./types/SearchResult";
+
+export * from "./types/SemanticSearchOptions";
