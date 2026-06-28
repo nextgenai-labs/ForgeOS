@@ -37,3 +37,5 @@ export * from "./types/SearchResult";
 export * from "./types/SemanticSearchOptions";
 
 export * from "./vector/SQLiteVectorStore";
+
+export * from "./vector/PgVectorStore";
